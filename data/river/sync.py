@@ -6,6 +6,8 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FILES_DIR = os.path.join(BASE_DIR, "files")
 
+max_files_to_download = 1000 # to prevent github workflow timeout
+
 
 def download_file(url, filename):
     print("Downloading:", filename)
@@ -45,6 +47,9 @@ def sync_files(url):
         files.append(href)
 
     print("Downloading", len(files), "files")
+    if len(files) > max_files_to_download:
+        print("Limiting to", max_files_to_download, "files")
+        files = files[:max_files_to_download]
     download_all(url, files)
 
 
